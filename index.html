@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>N+7</title>
+
+    <meta name="description" content="A simple exercise template." />
+    <!-- styles -->
+    <style></style>
+  </head>
+  <body>
+    <h1>N+7</h1>
+    <h2>Source text</h2>
+    <p id="sourceText"></p>
+    <h2>New text</h2>
+    <p id="newText"></p>
+    <!-- script -->
+    <script>
+      let nouns;
+      const sourceText = `Sherlock Holmes took his bottle from the corner of the mantel-piece and
+his hypodermic syringe from its neat morocco case. With his long,
+white, nervous fingers he adjusted the delicate needle, and rolled back
+his left shirt-cuff. For some little time his eyes rested thoughtfully
+upon the sinewy forearm and wrist all dotted and scarred with
+innumerable puncture-marks. Finally he thrust the sharp point home,
+pressed down the tiny piston, and sank back into the velvet-lined
+arm-chair with a long sigh of satisfaction.
+
+Three times a day for many months I had witnessed this performance, but
+custom had not reconciled my mind to it. On the contrary, from day to
+day I had become more irritable at the sight, and my conscience swelled
+nightly within me at the thought that I had lacked the courage to
+protest. Again and again I had registered a vow that I should deliver
+my soul upon the subject, but there was that in the cool, nonchalant
+air of my companion which made him the last man with whom one would
+care to take anything approaching to a liberty. His great powers, his
+masterly manner, and the experience which I had had of his many
+extraordinary qualities, all made me diffident and backward in crossing
+him.
+
+Yet upon that afternoon, whether it was the Beaune which I had taken
+with my lunch, or the additional exasperation produced by the extreme
+deliberation of his manner, I suddenly felt that I could hold out no
+longer.
+
+“Which is it to-day?” I asked,—“morphine or cocaine?”
+
+He raised his eyes languidly from the old black-letter volume which he
+had opened. “It is cocaine,” he said,—“a seven-per-cent. solution.
+Would you care to try it?”
+
+“No, indeed,” I answered, brusquely. “My constitution has not got over
+the Afghan campaign yet. I cannot afford to throw any extra strain upon
+it.”
+
+He smiled at my vehemence. “Perhaps you are right, Watson,” he said. “I
+suppose that its influence is physically a bad one. I find it, however,
+so transcendently stimulating and clarifying to the mind that its
+secondary action is a matter of small moment.”`;
+      const wordOffset = 7;
+      function generateNewText(text) {
+        let splitText = text.split(" ");
+        let newText = "";
+        for (const word of splitText) {
+          let indexInList = nouns.indexOf(word);
+          let newWord;
+          if (indexInList > -1) {
+            if (nouns[indexInList + wordOffset]) {
+              newWord = nouns[indexInList + wordOffset];
+            }
+          } else {
+            newWord = word;
+          }
+          if (newText === "") {
+            newText = newWord;
+          } else {
+            newText = newText + " " + newWord;
+          }
+        }
+        return newText;
+      }
+      function initPoem(nounList) {
+        nouns = nounList.split(/\r?\n/);
+        newText = generateNewText(sourceText);
+        document.getElementById("sourceText").innerHTML = sourceText;
+        document.getElementById("newText").innerHTML = newText;
+      }
+      fetch("nounlist.txt")
+        .then((response) => response.text())
+        .then((textContent) => initPoem(textContent));
+    </script>
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div
+      class="glitchButton"
+      style="position: fixed; top: 20px; right: 20px"
+    ></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+</html>
